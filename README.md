@@ -75,5 +75,5 @@ E-commerse database service
 - **Payment** and **Shipment** are optional at creation but required for fulfillment.
 
 # Phase 2
-## ER Model
+## ER Diagram
 ## Normalized Relational Schema (up to 3NF)
