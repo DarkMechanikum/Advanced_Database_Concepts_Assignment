@@ -79,3 +79,21 @@ E-commerse database service
 ![ER](https://github.com/user-attachments/assets/4af3a77b-00ae-4b88-bfc8-2870d2cf62e9)
 
 ## Normalized Relational Schema (up to 3NF)
+### Schema
+Customer(CustomerID, Name, Email, Phone, Address)
+Product(ProductID, Name, Category, Price, Stock)
+Order(OrderID, CustomerID, OrderDate, Status)
+OrderItem(OrderID, ProductID, Quantity, Price)
+Payment(PaymentID, OrderID, Amount, Method, PaymentDate)
+Shipment(ShipmentID, OrderID, ShipmentDate, Carrier, TrackingNumber)
+
+### Keys:
+#### Primary Keys:
+- CustomerID, ProductID, OrderID, PaymentID, ShipmentID
+- (OrderID, ProductID) for OrderItem
+#### Foreign Keys:
+- Order.CustomerID → Customer.CustomerID
+- OrderItem.OrderID → Order.OrderID
+- OrderItem.ProductID → Product.ProductID
+- Payment.OrderID → Order.OrderID
+- Shipment.OrderID → Order.OrderID
