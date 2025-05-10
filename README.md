@@ -76,4 +76,6 @@ E-commerse database service
 
 # Phase 2
 ## ER Diagram
+![ER](https://github.com/user-attachments/assets/4af3a77b-00ae-4b88-bfc8-2870d2cf62e9)
+
 ## Normalized Relational Schema (up to 3NF)
