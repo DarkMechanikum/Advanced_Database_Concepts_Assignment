@@ -10,7 +10,7 @@ E-commerse database service
 - **CustomerID** *(Primary Key)*
 - Name
 - Email *(Unique)*
-- Phone
+- Phone *(Unique)*
 - Address
 
 #### 2. Product
@@ -53,27 +53,26 @@ E-commerse database service
 
 | Relationship  | Entities Involved               | Cardinality | Description                                      |
 |---------------|---------------------------------|-------------|--------------------------------------------------|
-| Places        | Customer – Order                | 1:N         | A customer can place multiple orders.            |
-| Contains      | Order – Product (via OrderItem) | M:N         | Orders can contain many products and vice versa. |
+| Placed        | Customer – Order                | 1:M         | A customer can place multiple orders.            |
+| Contains      | Order – Product (via OrderItem) | M:M         | Orders can contain many products and vice versa. |
 | PaidWith      | Order – Payment                 | 1:1         | Each order has exactly one payment.              |
 | ShippedWith   | Order – Shipment                | 1:1         | Each order has exactly one shipment.             |
+
+---
+- `Customer (1) — (M) Order`
+- `Order (1) — (M) OrderItem`
+- `OrderItem (1) — (1) Product`
+- `Order (1) — (1) Payment`
+- `Order (1) — (1) Shipment`
 
 ---
 
 #### Constraints
 - **Email** in `Customer` must be unique.
+- **Phone** in `Customer` must be unique.
 - **Stock** in `Product` must be ≥ 0.
 - **OrderItem** must reference valid `OrderID` and `ProductID`.
 - **Payment** and **Shipment** are optional at creation but required for fulfillment.
-
----
-
-#### Relationships:
-- `Customer (1) — (N) Order`
-- `Order (1) — (M) OrderItem — (M) Product`
-- `Order (1) — (1) Payment`
-- `Order (1) — (1) Shipment`
-
 
 # Phase 2
 ## ER Model
