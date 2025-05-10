@@ -3,20 +3,6 @@
 # Phase 1
 ## Domain
 E-commerse database service
-## Main Entities & Relationships
-1. Customer (CustomerID, Name, Email, Phone, Address)
-2. Product (ProductID, Name, Category, Price, Stock)
-3. Order (OrderID, CustomerID, OrderDate, Status)
-4. OrderItem (OrderID, ProductID, Quantity, Price)
-5. Payment (PaymentID, OrderID, Amount, Method, PaymentDate)
-6. Shipment (ShipmentID, OrderID, ShipmentDate, Carrier, TrackingNumber)
-## Constraints
-1. Every order is linked to one customer.
-2. Each order may have multiple products.
-3. Each product can appear in many orders.
-4. Every order has one payment and one shipment.
-## Sample data
-For sample data creation I am going to use https://mockaroo.com/
 ## ER model
 ### Entities and Attributes
 
