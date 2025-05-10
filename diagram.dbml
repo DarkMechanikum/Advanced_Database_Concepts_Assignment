@@ -1,0 +1,46 @@
+
+Table Customer {
+  CustomerID int [pk]
+  Name varchar
+  Email varchar [unique]
+  Phone varchar [unique]
+  Address varchar
+}
+
+Table Product {
+  ProductID int [pk]
+  Name varchar
+  Category varchar
+  Price decimal
+  Stock int [note: "Non-negative"]
+}
+
+Table Order {
+  OrderID int [pk]
+  CustomerID int [ref: > Customer.CustomerID]
+  OrderDate date
+  Status varchar [note: "e.g., Pending, Shipped, Delivered"]
+}
+
+Table OrderItem {
+  OrderID int [ref: > Order.OrderID, pk]
+  ProductID int [ref: > Product.ProductID, pk]
+  Quantity int
+  Price decimal [note: "Price at time of purchase"]
+}
+
+Table Payment {
+  PaymentID int [pk]
+  OrderID int [ref: - Order.OrderID]
+  Amount decimal
+  Method varchar
+  PaymentDate date
+}
+
+Table Shipment {
+  ShipmentID int [pk]
+  OrderID int [ref: - Order.OrderID]
+  ShipmentDate date
+  Carrier varchar
+  TrackingNumber varchar
+}
