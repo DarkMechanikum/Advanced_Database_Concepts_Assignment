@@ -16,7 +16,8 @@ E-commerse database service
 #### 2. Product
 - **ProductID** *(Primary Key)*
 - Name
-- Category
+- Category *(Secondary Key)*
+- Description
 - Price
 - Stock *(Non-negative)*
 
@@ -29,7 +30,7 @@ E-commerse database service
 #### 4. OrderItem *(Associative Entity)*
 - **OrderID** *(Foreign Key → Order)*
 - **ProductID** *(Foreign Key → Product)*
-- Quantity
+- Quantity *(Non-negative)*
 - Price *(at time of purchase)*
 - **Primary Key**: *(OrderID, ProductID)*
 
@@ -54,7 +55,7 @@ E-commerse database service
 | Relationship  | Entities Involved               | Cardinality | Description                                      |
 |---------------|---------------------------------|-------------|--------------------------------------------------|
 | Placed        | Customer – Order                | 1:M         | A customer can place multiple orders.            |
-| Contains      | Order – Product (via OrderItem) | M:M         | Orders can contain many products and vice versa. |
+| Contains      | Order – Product (via OrderItem) | 1:M         | Order can contain many products.                 |
 | PaidWith      | Order – Payment                 | 1:1         | Each order has exactly one payment.              |
 | ShippedWith   | Order – Shipment                | 1:1         | Each order has exactly one shipment.             |
 
@@ -70,7 +71,9 @@ E-commerse database service
 #### Constraints
 - **Email** in `Customer` must be unique.
 - **Phone** in `Customer` must be unique.
+- **Email** in `Customer` must be unique.
 - **Stock** in `Product` must be ≥ 0.
+- **Quantity** in `OrderItem` must be ≥ 0. 
 - **OrderItem** must reference valid `OrderID` and `ProductID`.
 - **Payment** and **Shipment** are optional at creation but required for fulfillment.
 
@@ -81,7 +84,7 @@ E-commerse database service
 ## Normalized Relational Schema (up to 3NF)
 ### Schema
 Customer(CustomerID, Name, Email, Phone, Address)
-Product(ProductID, Name, Category, Price, Stock)
+Product(ProductID, Name, Category, Price, Stock, Description)
 Order(OrderID, CustomerID, OrderDate, Status)
 OrderItem(OrderID, ProductID, Quantity, Price)
 Payment(PaymentID, OrderID, Amount, Method, PaymentDate)
@@ -97,3 +100,17 @@ Shipment(ShipmentID, OrderID, ShipmentDate, Carrier, TrackingNumber)
 - OrderItem.ProductID → Product.ProductID
 - Payment.OrderID → Order.OrderID
 - Shipment.OrderID → Order.OrderID
+
+## File Organization
+- Hashed for Customers and Products (fast retrieval by ID)
+- Sorted for Orders (often queried by date)
+- Hashed for Payments and Shipments (fast retrieval by ID)
+
+## Indexing Strategy
+- Primary Index: On OrderID, CustomerID, ProductID
+- Secondary Index: On Product.Category, Customer.Email, Customer.Phone, Order.Status
+
+## Justification:
+
+- Clustered index speeds up chronological order queries.
+- Secondary index on Product.Category helps with category-based reports.
