@@ -80,7 +80,7 @@ E-commerse database service
 
 # Phase 2
 ## ER Diagram
-![ER](https://github.com/user-attachments/assets/4af3a77b-00ae-4b88-bfc8-2870d2cf62e9)
+![Untitled](https://github.com/user-attachments/assets/48ef3a94-464a-41c2-9ff4-b7cf0a2a5a4c)
 
 ## Normalized Relational Schema (up to 3NF)
 ### Schema
