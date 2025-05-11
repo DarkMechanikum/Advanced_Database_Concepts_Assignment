@@ -18,7 +18,7 @@ E-commerse database service
 - Name
 - Category *(Secondary Key)*
 - Description
-- Price
+- Price *(Non-negative)*
 - Stock *(Non-negative)*
 
 #### 3. Order
@@ -31,13 +31,13 @@ E-commerse database service
 - **OrderID** *(Foreign Key → Order)*
 - **ProductID** *(Foreign Key → Product)*
 - Quantity *(Non-negative)*
-- Price *(at time of purchase)*
+- Price *(at time of purchase, Non-negative)*
 - **Primary Key**: *(OrderID, ProductID)*
 
 #### 5. Payment
 - **PaymentID** *(Primary Key)*
 - OrderID *(Foreign Key → Order)*
-- Amount
+- Amount *(Non-negative)*
 - Method *(e.g., Card, PayPal)*
 - PaymentDate *(Secondary Key)*
 
@@ -71,9 +71,10 @@ E-commerse database service
 #### Constraints
 - **Email** in `Customer` must be unique.
 - **Phone** in `Customer` must be unique.
-- **Email** in `Customer` must be unique.
 - **Stock** in `Product` must be ≥ 0.
-- **Quantity** in `OrderItem` must be ≥ 0. 
+- **Price** in `Product` must be ≥ 0.
+- **Quantity** in `OrderItem` must be ≥ 0.
+- **Amount** in `Payment` must be ≥ 0.
 - **OrderItem** must reference valid `OrderID` and `ProductID`.
 - **Payment** and **Shipment** are optional at creation but required for fulfillment.
 
@@ -109,7 +110,7 @@ Though clustered index may be useful for some usecases we can use secondary inde
 - Secondary Index: On Product.Category, Customer.Email, Customer.Phone, Order.Status.
 Since at login user uses his email/phone, not his ID, secondary keys are necessary.
 Secondary index of products by category is necessary for browsing a category of items, so we must support retrieval of all products of a certain category.
-Secondary index of orderes by status with filtering by userID is needed for displaying all orders of a certain status for a certain user.
+Secondary composite key of Orderes by status with filtering by userID is needed for displaying all orders of a certain status for a certain user.
 Secondary index of Payments by PaymentDate is useful for statistics of the platform as a whole.
 
 
