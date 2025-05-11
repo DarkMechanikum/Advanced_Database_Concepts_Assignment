@@ -39,7 +39,7 @@ E-commerse database service
 - OrderID *(Foreign Key → Order)*
 - Amount
 - Method *(e.g., Card, PayPal)*
-- PaymentDate
+- PaymentDate *(Secondary Key)*
 
 #### 6. Shipment
 - **ShipmentID** *(Primary Key)*
@@ -102,15 +102,14 @@ Shipment(ShipmentID, OrderID, ShipmentDate, Carrier, TrackingNumber)
 - Shipment.OrderID → Order.OrderID
 
 ## File Organization
-- Hashed for Customers and Products (fast retrieval by ID)
-- Sorted for Orders (often queried by date)
-- Hashed for Payments and Shipments (fast retrieval by ID)
-
+- Hashed for everything, since every usecase suggests retrieval by ID as quick as possible. 
+Though clustered index may be useful for some usecases we can use secondary indexes and some backend logic for this, while it is much more important to provide fast retrieval of a certain entity at any given moment, since those operations are more frequent.
 ## Indexing Strategy
-- Primary Index: On OrderID, CustomerID, ProductID
-- Secondary Index: On Product.Category, Customer.Email, Customer.Phone, Order.Status
+- Primary Index: On ID of each entity, since most usecases suggest retrieval of a certain entity by it's ID.
+- Secondary Index: On Product.Category, Customer.Email, Customer.Phone, Order.Status.
+Since at login user uses his email/phone, not his ID, secondary keys are necessary.
+Secondary index of products by category is necessary for browsing a category of items, so we must support retrieval of all products of a certain category.
+Secondary index of orderes by status with filtering by userID is needed for displaying all orders of a certain status for a certain user.
+Secondary index of Payments by PaymentDate is useful for statistics of the platform as a whole.
 
-## Justification:
 
-- Clustered index speeds up chronological order queries.
-- Secondary index on Product.Category helps with category-based reports.
