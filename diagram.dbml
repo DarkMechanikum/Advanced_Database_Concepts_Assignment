@@ -1,18 +1,25 @@
-
 Table Customer {
   CustomerID int [pk]
   Name varchar
   Email varchar [unique]
   Phone varchar [unique]
   Address varchar
+  Indexes {
+    (Email)
+    (Phone)
+  }
 }
 
 Table Product {
   ProductID int [pk]
   Name varchar
-  Category varchar
-  Price decimal
+  Category varchar 
+  Description varchar
+  Price decimal [note: "Non-negative"]
   Stock int [note: "Non-negative"]
+  Indexes {
+    (Category)
+  }
 }
 
 Table Order {
@@ -20,21 +27,27 @@ Table Order {
   CustomerID int [ref: > Customer.CustomerID]
   OrderDate date
   Status varchar [note: "e.g., Pending, Shipped, Delivered"]
+  Indexes {
+    (Status)
+  }
 }
 
 Table OrderItem {
   OrderID int [ref: > Order.OrderID, pk]
   ProductID int [ref: > Product.ProductID, pk]
-  Quantity int
-  Price decimal [note: "Price at time of purchase"]
+  Quantity int [note: "Non-negative"]
+  Price decimal [note: "Price at time of purchase, non-negative"]
 }
 
 Table Payment {
   PaymentID int [pk]
   OrderID int [ref: - Order.OrderID]
-  Amount decimal
+  Amount decimal [note: "Non-negative"]
   Method varchar
   PaymentDate date
+  Indexes {
+    (PaymentDate)
+  }
 }
 
 Table Shipment {
