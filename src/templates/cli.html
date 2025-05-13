@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Database CLI</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <h1>Database CLI</h1>
+
+    {% if message %}
+      <p class="message">{{ message }}</p>
+    {% endif %}
+
+    <form method="POST">
+      <label>Enter SQL query:</label><br>
+      <textarea name="query" rows="6" cols="80" required>{{ query or '' }}</textarea><br>
+      <button type="submit">Run</button>
+    </form>
+
+    {% if columns and results %}
+    <h2>Results</h2>
+    <table>
+      <tr>{% for col in columns %}<th>{{ col }}</th>{% endfor %}</tr>
+      {% for row in results %}
+        <tr>{% for cell in row %}<td>{{ cell }}</td>{% endfor %}</tr>
+      {% endfor %}
+    </table>
+    {% elif results %}
+      <p>No results returned.</p>
+    {% endif %}
+
+    <br><a href="/">⬅ Back to Dashboard</a>
+  </div>
+</body>
+</html>

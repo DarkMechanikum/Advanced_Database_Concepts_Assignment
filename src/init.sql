@@ -1,6 +1,6 @@
 -- Schema setup for ecommerce_db
 
-CREATE TABLE Customers (
+CREATE TABLE "Customers" (
   CustomerID INT PRIMARY KEY,
   Name VARCHAR,
   Email VARCHAR UNIQUE,
@@ -8,7 +8,7 @@ CREATE TABLE Customers (
   Address VARCHAR
 );
 
-CREATE TABLE Products (
+CREATE TABLE "Products" (
   ProductID INT PRIMARY KEY,
   Name VARCHAR,
   Category VARCHAR,
@@ -17,22 +17,22 @@ CREATE TABLE Products (
   Stock INT CHECK (Stock >= 0)
 );
 
-CREATE TABLE Orders (
+CREATE TABLE "Orders" (
   OrderID INT PRIMARY KEY,
-  CustomerID INT REFERENCES Customers(CustomerID),
+  CustomerID INT REFERENCES "Customers"(CustomerID),
   OrderDate DATE,
   Status VARCHAR CHECK (Status IN ('Pending', 'Shipped', 'Delivered', 'Cancelled'))
 );
 
-CREATE TABLE OrderItems (
-  OrderID INT REFERENCES Orders(OrderID),
-  ProductID INT REFERENCES Products(ProductID),
+CREATE TABLE "OrderItems" (
+  OrderID INT REFERENCES "Orders"(OrderID),
+  ProductID INT REFERENCES "Products"(ProductID),
   Quantity INT CHECK (Quantity >= 0),
   Price DECIMAL CHECK (Price >= 0),
   PRIMARY KEY (OrderID, ProductID)
 );
 
-\COPY Customers FROM '/data/Customers.csv' CSV HEADER;
-\COPY Products FROM '/data/Products.csv' CSV HEADER;
-\COPY Orders FROM '/data/Orders.csv' CSV HEADER;
-\COPY OrderItems FROM '/data/OrderItems.csv' CSV HEADER;
+\COPY "Customers" FROM '/data/Customers.csv' CSV HEADER;
+\COPY "Products" FROM '/data/Products.csv' CSV HEADER;
+\COPY "Orders" FROM '/data/Orders.csv' CSV HEADER;
+\COPY "OrderItems" FROM '/data/OrderItems.csv' CSV HEADER;

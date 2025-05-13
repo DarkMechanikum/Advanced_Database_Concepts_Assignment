@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Low Stock Products</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <h1>Low Stock Overview</h1>
+
+    {% if message %}
+      <p class="message">{{ message }}</p>
+    {% endif %}
+
+    <form method="POST">
+      <label>Show products with stock less than:</label>
+      <input type="number" name="threshold" required>
+      <button type="submit">Check</button>
+    </form>
+
+    {% if products %}
+    <h2>Products below stock {{ threshold }}</h2>
+    <table>
+      <tr><th>ProductID</th><th>Name</th><th>Category</th><th>Stock</th><th>Price</th></tr>
+      {% for p in products %}
+        <tr>
+          <td>{{ p[0] }}</td><td>{{ p[1] }}</td><td>{{ p[2] }}</td><td>{{ p[3] }}</td><td>{{ p[4] }}</td>
+        </tr>
+      {% endfor %}
+    </table>
+    {% endif %}
+
+    <br><a href="/">⬅ Back to Dashboard</a>
+  </div>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Customer Management</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <h1>Customer Management</h1>
+
+    {% if message %}
+      <p class="message">{{ message }}</p>
+    {% endif %}
+
+    <h2>Search Customer by ID</h2>
+    <form method="POST">
+      <input type="number" name="search_id" required>
+      <button name="search" type="submit">Search</button>
+    </form>
+
+    {% if customer %}
+    <h2>Edit Customer</h2>
+    <form method="POST">
+      <input type="hidden" name="id" value="{{ customer[0] }}">
+      <label>Name:</label>
+      <input name="name" value="{{ customer[1] }}" required><br>
+      <label>Email:</label>
+      <input name="email" value="{{ customer[2] }}" required><br>
+      <label>Phone:</label>
+      <input name="phone" value="{{ customer[3] }}" required><br>
+      <label>Address:</label>
+      <input name="address" value="{{ customer[4] }}" required><br>
+      <button name="update" type="submit">Update Customer</button>
+    </form>
+    {% endif %}
+
+    <h2>Create New Customer</h2>
+    <form method="POST">
+      <label>ID:</label>
+      <input type="number" name="new_id" required><br>
+      <label>Name:</label>
+      <input name="new_name" required><br>
+      <label>Email:</label>
+      <input name="new_email" required><br>
+      <label>Phone:</label>
+      <input name="new_phone" required><br>
+      <label>Address:</label>
+      <input name="new_address" required><br>
+      <button name="create" type="submit">Create Customer</button>
+    </form>
+
+    <br><a href="/">⬅ Back to Dashboard</a>
+  </div>
+</body>
+</html>

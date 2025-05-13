@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <h1>E-Commerce Dashboard</h1>
+
+    <div class="metrics">
+      <div class="card">Total Customers: {{ total_customers }}</div>
+      <div class="card">Total Orders: {{ total_orders }}</div>
+      <div class="card">Total Products: {{ total_products }}</div>
+    </div>
+
+    <div class="summary-section">
+      <h2>Top Customers (by Order Count)</h2>
+      <table>
+        <tr><th>Customer ID</th><th>Name</th><th>Order Count</th></tr>
+        {% for c in top_customers %}
+        <tr><td>{{ c[0] }}</td><td>{{ c[1] }}</td><td>{{ c[2] }}</td></tr>
+        {% endfor %}
+      </table>
+
+      <h2>Top Products (by Quantity Sold)</h2>
+      <table>
+        <tr><th>Product ID</th><th>Name</th><th>Total Sold</th></tr>
+        {% for p in top_products %}
+        <tr><td>{{ p[0] }}</td><td>{{ p[1] }}</td><td>{{ p[2] }}</td></tr>
+        {% endfor %}
+      </table>
+
+      <h2>Largest Orders (by Total Value)</h2>
+      <table>
+        <tr><th>Order ID</th><th>Customer ID</th><th>Total Value</th></tr>
+        {% for o in biggest_orders %}
+        <tr><td>{{ o[0] }}</td><td>{{ o[1] }}</td><td>${{ o[2] }}</td></tr>
+        {% endfor %}
+      </table>
+    </div>
+
+    <div class="navigation">
+      <a href="/customer">Customer Management</a>
+      <a href="/order">Order Management</a>
+      <a href="/product">Product Management</a>
+      <a href="/category">Browse by Category</a>
+      <a href="/stock">Stock Overview</a>
+      <a href="/cli">Database CLI</a>
+      <a href="/statistics">Statistics</a>
+    </div>
+  </div>
+</body>
+</html>
