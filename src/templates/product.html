@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Product Management</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <h1>Product Management</h1>
+
+    {% if message %}
+      <p class="message">{{ message }}</p>
+    {% endif %}
+
+    <h2>Search Product</h2>
+    <form method="POST">
+      <input type="number" name="search_id" placeholder="Product ID" required>
+      <button name="search" type="submit">Search</button>
+    </form>
+
+    {% if product %}
+    <h2>Edit Product</h2>
+    <form method="POST">
+      <input type="hidden" name="id" value="{{ product[0] }}">
+      <label>Name:</label>
+      <input name="name" value="{{ product[1] }}" required><br>
+      <label>Category:</label>
+      <input name="category" value="{{ product[2] }}" required><br>
+      <label>Description:</label>
+      <input name="description" value="{{ product[3] }}" required><br>
+      <label>Price:</label>
+      <input name="price" value="{{ product[4] }}" required><br>
+      <label>Stock:</label>
+      <input name="stock" value="{{ product[5] }}" required><br>
+      <button name="update" type="submit">Update Product</button>
+    </form>
+
+    <h3>Total Quantity Sold: {{ total_sold }}</h3>
+    {% endif %}
+
+    <h2>Create New Product</h2>
+    <form method="POST">
+      <label>Product ID:</label>
+      <input name="new_id" required><br>
+      <label>Name:</label>
+      <input name="new_name" required><br>
+      <label>Category:</label>
+      <input name="new_category" required><br>
+      <label>Description:</label>
+      <input name="new_description" required><br>
+      <label>Price:</label>
+      <input name="new_price" required><br>
+      <label>Stock:</label>
+      <input name="new_stock" required><br>
+      <button name="create" type="submit">Create Product</button>
+    </form>
+
+    <br><a href="/">⬅ Back to Dashboard</a>
+  </div>
+</body>
+</html>

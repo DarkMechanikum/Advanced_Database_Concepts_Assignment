@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Order Statistics</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <h1>Order Statistics by Date Range</h1>
+
+    {% if message %}
+      <p class="message">{{ message }}</p>
+    {% endif %}
+
+    <form method="POST">
+      <label>Start Date:</label>
+      <input type="date" name="start_date" required>
+      <label>End Date:</label>
+      <input type="date" name="end_date" required>
+      <button type="submit">View Orders</button>
+    </form>
+
+    {% if orders %}
+      <h2>Orders from {{ start_date }} to {{ end_date }}</h2>
+      <p><strong>Total Orders:</strong> {{ order_count }}</p>
+      <p><strong>Total Revenue:</strong> ${{ total_revenue }}</p>
+
+      <table>
+        <tr><th>OrderID</th><th>CustomerID</th><th>Date</th><th>Status</th><th>Total</th></tr>
+        {% for o in orders %}
+        <tr>
+          <td>{{ o[0] }}</td>
+          <td>{{ o[1] }}</td>
+          <td>{{ o[2] }}</td>
+          <td>{{ o[3] }}</td>
+          <td>${{ o[4] }}</td>
+        </tr>
+        {% endfor %}
+      </table>
+    {% endif %}
+
+    <br><a href="/">⬅ Back to Dashboard</a>
+  </div>
+</body>
+</html>

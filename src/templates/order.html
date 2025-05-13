@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Order Management</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <h1>Order Management</h1>
+
+    {% if message %}
+      <p class="message">{{ message }}</p>
+    {% endif %}
+
+    <h2>Search Order</h2>
+    <form method="POST">
+      <input type="number" name="search_id" placeholder="Order ID" required>
+      <button name="search" type="submit">Search</button>
+    </form>
+
+    {% if order %}
+    <h2>Edit Order</h2>
+    <form method="POST">
+      <input type="hidden" name="id" value="{{ order[0] }}">
+      <label>Customer ID:</label>
+      <input name="customer_id" value="{{ order[1] }}" required><br>
+      <label>Order Date:</label>
+      <input name="order_date" value="{{ order[2] }}" required><br>
+      <label>Status:</label>
+      <input name="status" value="{{ order[3] }}" required><br>
+      <button name="update" type="submit">Update Order</button>
+    </form>
+
+    <h3>Order Items</h3>
+    <table>
+      <tr><th>ProductID</th><th>Quantity</th><th>Price</th><th>Action</th></tr>
+      {% for item in order_items %}
+        <tr>
+          <td>{{ item[0] }}</td><td>{{ item[1] }}</td><td>{{ item[2] }}</td>
+          <td>
+            <form method="POST" style="display:inline">
+              <input type="hidden" name="order_id" value="{{ order[0] }}">
+              <input type="hidden" name="product_id" value="{{ item[0] }}">
+              <button name="delete_item" type="submit">Delete</button>
+            </form>
+          </td>
+        </tr>
+      {% endfor %}
+    </table>
+
+    <h4>Add Order Item</h4>
+    <form method="POST">
+      <input type="hidden" name="order_id" value="{{ order[0] }}">
+      <label>Product ID:</label>
+      <input name="product_id" required><br>
+      <label>Quantity:</label>
+      <input name="quantity" required><br>
+      <label>Price:</label>
+      <input name="price" required><br>
+      <button name="add_item" type="submit">Add Item</button>
+    </form>
+    {% endif %}
+
+    <h2>Create New Order</h2>
+    <form method="POST">
+      <label>Order ID:</label>
+      <input name="new_id" required><br>
+      <label>Customer ID:</label>
+      <input name="new_customer_id" required><br>
+      <label>Order Date:</label>
+      <input name="new_order_date" required><br>
+      <label>Status:</label>
+      <input name="new_status" required><br>
+      <button name="create" type="submit">Create Order</button>
+    </form>
+
+    <br><a href="/">⬅ Back to Dashboard</a>
+  </div>
+</body>
+</html>
