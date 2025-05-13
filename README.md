@@ -103,7 +103,7 @@ Shipment(ShipmentID, OrderID, ShipmentDate, Carrier, TrackingNumber)
 - Shipment.OrderID → Order.OrderID
 
 ## File Organization
-- Hashed for everything, since every usecase suggests retrieval by ID as quick as possible. 
+- Heap for everything, since PostgreSQL does not support Hash-based data storage. Every usecase suggests retrieval by ID as quick as possible, so I am using hash-based indexing to achieve similar performance. 
 Though clustered index may be useful for some usecases we can use secondary indexes and some backend logic for this, while it is much more important to provide fast retrieval of a certain entity at any given moment, since those operations are more frequent.
 ## Indexing Strategy
 - Primary Index: On ID of each entity, since most usecases suggest retrieval of a certain entity by it's ID.
@@ -111,8 +111,4 @@ Though clustered index may be useful for some usecases we can use secondary inde
 Since at login user uses his email/phone, not his ID, secondary keys are necessary.
 Secondary index of products by category is necessary for browsing a category of items, so we must support retrieval of all products of a certain category.
 Secondary composite key of Orderes by status with filtering by userID is needed for displaying all orders of a certain status for a certain user.
-
-## Important note: since I am using PostgreSQL for my implementation data organisations other than heap or sorted are not avaliable, but I am using hashes for indexing, which will effectively achieve the same performance.
-Secondary index of Payments by PaymentDate is useful for statistics of the platform as a whole.
-
 
