@@ -104,11 +104,24 @@ Shipment(ShipmentID, OrderID, ShipmentDate, Carrier, TrackingNumber)
 
 ## File Organization
 - Heap for everything, since PostgreSQL does not support Hash-based data storage. Every usecase suggests retrieval by ID as quick as possible, so I am using hash-based indexing to achieve similar performance. 
-Though clustered index may be useful for some usecases we can use secondary indexes and some backend logic for this, while it is much more important to provide fast retrieval of a certain entity at any given moment, since those operations are more frequent.
+I also use clustered data organisation for orders, for them to be sorted by date, this improves performance for fetching ranges of orders for statistical purposes.
+
 ## Indexing Strategy
 - Primary Index: On ID of each entity, since most usecases suggest retrieval of a certain entity by it's ID.
-- Secondary Index: On Product.Category, Customer.Email, Customer.Phone, Order.Status.
+- Secondary Index: On Product.Category, Customer.Email, Customer.Phone, Order.Status, Order.Date.
 Since at login user uses his email/phone, not his ID, secondary keys are necessary.
 Secondary index of products by category is necessary for browsing a category of items, so we must support retrieval of all products of a certain category.
 Secondary composite key of Orderes by status with filtering by userID is needed for displaying all orders of a certain status for a certain user.
+Secondary index of Orders by date (cluster index) is used for fast statistical data fetching.
+# Phase 3 
 
+## The results of the development are present in this repository, please see the /src directory for source files
+
+# Phase 4
+
+## Performance evaluation
+Since In my project I only use a thousand rows in each table, there is no great difference in time for fetching data with and without hash-based indexes.
+However, it is significant enough to clearly see the difference even at such small scale. It is important to keep in mind, that as size of the database grows, the data fetching algorithm start playing way more important role.
+
+Example queries without indexing: 
+- 
