@@ -116,6 +116,7 @@ Secondary index of Orders by date (cluster index) is used for fast statistical d
 # Phase 3 
 
 ## The results of the development are present in this repository, please see the /src directory for source files
+In order to run the application, docker engine and docker compose plugin must be installed. To build and run the application, simply run the build.sh bash script. 
 
 # Phase 4
 
@@ -168,3 +169,122 @@ However, it is significant enough to clearly see the difference even at such sma
   Rows Removed by Filter: 718
   Planning Time: 0.426 ms
   Execution Time: 0.185 ms
+
+
+### I/O cost calculation
+
+- Block size (B): 4096 bytes (4 KB)
+- Estimated record size (R): 128 bytes
+- Number of records (N): 1000
+
+
+bfr = floor(4096 / 128) = 32 records per block
+b = ceil(1000 / 32) = 32 blocks
+
+A full scan of the `Customers` table requires **32 block accesses**.
+
+---
+
+#### Estimated Scan Costs for All Tables
+
+| Table       | Est. Record Size (bytes) | # Records | Blocking Factor | # Blocks (Scan Cost) |
+|-------------|---------------------------|-----------|------------------|-----------------------|
+| Customers   | 128                       | 1000      | 32               | 32 blocks             |
+| Products    | 160                       | 500       | 25               | 20 blocks             |
+| Orders      | 96                        | 10,000    | 42               | 239 blocks            |
+| OrderItems  | 48                        | 20,000    | 85               | 236 blocks            |
+
+---
+
+#### Indexed Lookup Cost (Rough Estimate)
+
+**Query Example:**
+
+```sql
+SELECT * FROM "Customers" WHERE CustomerID = 42;
+```
+
+**Cost Breakdown:**
+
+- B-tree/Hash index probe: ~2–3 I/Os
+- Table fetch: 1 I/O
+- **Total**: ~3–4 I/Os
+
+Compared to 32 blocks for a full scan, this is a major efficiency gain.
+
+---
+
+### Spanned vs Unspanned data organisation
+
+Since I am using PostgreSQL for my implementation, I use spanned data organisation. 
+However, I can provide some assumptions and calculations, based on my specific database
+
+Let's illustrate it with the Products table:
+
+**Assumptions:**
+
+- Block size: 4096 bytes
+- Record size: 160 bytes (includes all columns)
+- Total records: 500
+
+---
+
+#### Spanned File Organization
+
+```text
+bfr_spanned = floor(4096 / 160) = 25
+blocks_spanned = ceil(500 / 25) = 20
+```
+
+**20 blocks** needed — minimal space wasted due to tight packing.
+
+---
+
+#### Unspanned File Organization
+
+```text
+bfr_unspanned = floor(4096 / 160) = 25
+Each record must fully fit into one block.
+blocks_unspanned = ceil(500 / 25) = 20 (same count, but more internal fragmentation)
+```
+
+But consider a case where `R = 205 bytes`:
+
+```text
+bfr_unspanned = floor(4096 / 205) = 19
+blocks_unspanned = ceil(500 / 19) = 27 blocks
+```
+
+Unspanned org uses **more blocks** due to unused space at the end of blocks.
+
+---
+
+#### Effects of spanned and unspanned data organisation
+
+| Feature                               | Spanned                             | Unspanned                       |
+|---------------------------------------|-------------------------------------|---------------------------------|
+| Record spans block?                   | Allowed                             | Not allowed                     |
+| Space utilization                     | Higher                              | Lower                           |
+| Simplicity of block access            | Harder (record split across blocks) | Simpler                         |
+| Ideal for                             | Variable or large records           | Fixed-size, small records       |
+| Overhead                              | Higher parsing complexity           | Higher block count and I/O cost |
+
+---
+
+- PostgreSQL uses **spanned heap files** by default for flexibility and efficiency.
+- **Unspanned** files may result in **higher I/O** costs due to unused block space.
+- Understanding record size and access patterns helps in designing optimal file storage formats.
+
+---
+
+### Application interface
+
+![image](https://github.com/user-attachments/assets/b53baab7-0648-4725-85a4-7f84813e72c4)
+![image](https://github.com/user-attachments/assets/d1e74c16-89b8-481d-998e-3ac3f62a9563)
+![image](https://github.com/user-attachments/assets/57e7adb2-deea-43bc-9658-ee7471b0307e)
+![image](https://github.com/user-attachments/assets/346de6ab-3f09-4846-9794-748416133548)
+![image](https://github.com/user-attachments/assets/363f844f-1cab-453b-80fc-5bb4f7a3bd76)
+![image](https://github.com/user-attachments/assets/c3c93385-be8f-47a0-8b0e-e781a33f3035)
+![image](https://github.com/user-attachments/assets/62a42e7b-581b-4a5d-a362-8fa3d61f9ea4)
+![image](https://github.com/user-attachments/assets/651ca6e6-fa29-467b-a7d5-613e9c79f9c3)
+
