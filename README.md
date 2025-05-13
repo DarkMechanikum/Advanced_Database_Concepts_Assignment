@@ -111,6 +111,8 @@ Though clustered index may be useful for some usecases we can use secondary inde
 Since at login user uses his email/phone, not his ID, secondary keys are necessary.
 Secondary index of products by category is necessary for browsing a category of items, so we must support retrieval of all products of a certain category.
 Secondary composite key of Orderes by status with filtering by userID is needed for displaying all orders of a certain status for a certain user.
+
+## Important note: since I am using PostgreSQL for my implementation data organisations other than heap or sorted are not avaliable, but I am using hashes for indexing, which will effectively achieve the same performance.
 Secondary index of Payments by PaymentDate is useful for statistics of the platform as a whole.
 
 
