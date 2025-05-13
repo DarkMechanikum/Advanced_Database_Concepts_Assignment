@@ -123,6 +123,8 @@ In order to run the application, docker engine and docker compose plugin must be
 ## Performance evaluation
 Since In my project I only use a thousand rows in each table, there is no great difference in time for fetching data with and without hash-based indexes.
 However, it is significant enough to clearly see the difference even at such small scale. It is important to keep in mind, that as size of the database grows, the data fetching algorithm start playing way more important role.
+### Important note:
+There are two branches in this repository: "main" and "dev", in the main branch the PostgreSQL is used **without indexing**, while in dev branch it is used **with indexing**.
 
 ### Example queries without indexing: 
 - Index Scan using "Customers_pkey" on "Customers" (cost=0.28..8.29 rows=1 width=72) (actual time=0.121..0.135 rows=1 loops=1)
