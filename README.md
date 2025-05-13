@@ -147,3 +147,24 @@ However, it is significant enough to clearly see the difference even at such sma
   Planning Time: 0.556 ms
   Execution Time: 1.516 ms
 ### Example queries with indexing: 
+- Index Scan using idx_customers_id_hash on "Customers" (cost=0.00..8.02 rows=1 width=72) (actual time=0.020..0.021 rows=1 loops=1)
+  Index Cond: (customerid = 981)
+  Planning Time: 0.597 ms
+  Execution Time: 0.058 ms
+  
+- Index Scan using idx_orders_customerid_hash on "Orders" (cost=0.00..8.02 rows=1 width=20) (actual time=0.070..0.072 rows=2 loops=1)
+  Index Cond: (customerid = 981)
+  Planning Time: 0.390 ms
+  Execution Time: 0.125 ms
+  
+- Seq Scan on "Products" (cost=0.00..32.00 rows=5 width=101) (actual time=0.325..0.486 rows=1 loops=1)
+  Filter: (lower((category)::text) = 'tools'::text)
+  Rows Removed by Filter: 999
+  Planning Time: 0.629 ms
+  Execution Time: 0.516 ms
+  
+- Seq Scan on "Orders" (cost=0.00..22.00 rows=285 width=20) (actual time=0.007..0.116 rows=282 loops=1)
+  Filter: ((orderdate >= '2025-01-01'::date) AND (orderdate <= '2025-03-31'::date))
+  Rows Removed by Filter: 718
+  Planning Time: 0.426 ms
+  Execution Time: 0.185 ms
