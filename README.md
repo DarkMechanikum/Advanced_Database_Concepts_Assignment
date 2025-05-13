@@ -24,7 +24,7 @@ E-commerse database service
 #### 3. Order
 - **OrderID** *(Primary Key)*
 - CustomerID *(Foreign Key → Customer)*
-- OrderDate
+- OrderDate *(Secondary key for clustered index)*
 - Status *(e.g., Pending, Shipped, Delivered)*
 
 #### 4. OrderItem *(Associative Entity)*
@@ -123,5 +123,21 @@ Secondary index of Orders by date (cluster index) is used for fast statistical d
 Since In my project I only use a thousand rows in each table, there is no great difference in time for fetching data with and without hash-based indexes.
 However, it is significant enough to clearly see the difference even at such small scale. It is important to keep in mind, that as size of the database grows, the data fetching algorithm start playing way more important role.
 
-Example queries without indexing: 
-- 
+### Example queries without indexing: 
+- Index Scan using "Customers_pkey" on "Customers" (cost=0.28..8.29 rows=1 width=72) (actual time=0.121..0.135 rows=1 loops=1)
+  Index Cond: (customerid = 981)
+  Planning Time: 0.889 ms
+  Execution Time: 0.232 ms
+
+- Seq Scan on "Orders" (cost=0.00..19.50 rows=1 width=20) (actual time=0.110..0.222 rows=2 loops=1)
+  Filter: (customerid = 981)
+  Rows Removed by Filter: 998
+  Planning Time: 0.655 ms
+  Execution Time: 0.399 ms
+
+- Seq Scan on "Products" (cost=0.00..32.00 rows=5 width=101) (actual time=0.687..1.004 rows=1 loops=1)
+  Filter: (lower((category)::text) = 'tools'::text)
+  Rows Removed by Filter: 999
+  Planning Time: 1.119 ms
+  Execution Time: 1.068 ms
+### Example queries with indexing: 
