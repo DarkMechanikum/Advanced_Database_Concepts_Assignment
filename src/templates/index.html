@@ -1,0 +1,46 @@
+<h3>Quick Lookup by ID</h3>
+<form method="POST">
+  <label>Customer ID: </label>
+  <input name="input_value" required>
+  <input type="hidden" name="input_type" value="customer_orders">
+  <button type="submit">Show Orders of Customer</button>
+</form>
+
+<form method="POST">
+  <label>Order ID: </label>
+  <input name="input_value" required>
+  <input type="hidden" name="input_type" value="order_items">
+  <button type="submit">Show OrderItems of Order</button>
+</form>
+
+<form method="POST">
+  <label>Customer ID: </label>
+  <input name="input_value" required>
+  <input type="hidden" name="input_type" value="customer_info">
+  <button type="submit">Show Customer Info</button>
+</form>
+
+<form method="POST">
+  <label>Product ID: </label>
+  <input name="input_value" required>
+  <input type="hidden" name="input_type" value="product_description">
+  <button type="submit">Show Product Description</button>
+</form>
+
+{% if results %}
+  <h3>Results:</h3>
+  <table>
+    <tr>
+      {% for col in columns %}
+        <th>{{ col }}</th>
+      {% endfor %}
+    </tr>
+    {% for row in results %}
+      <tr>
+        {% for cell in row %}
+          <td>{{ cell }}</td>
+        {% endfor %}
+      </tr>
+    {% endfor %}
+  </table>
+{% endif %}
