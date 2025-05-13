@@ -1,5 +1,7 @@
 # Advanced Database Concepts Assignment by Vladimir Shtarev
 
+Please see the repository for the full project https://github.com/DarkMechanikum/Advanced_Database_Concepts_Assignment/tree/main
+
 # Phase 1
 ## Domain
 E-commerse database service
