@@ -1,4 +1,4 @@
-# Advanced_Database_Concepts_Assignment
+# Advanced Database Concepts Assignment by Vladimir Shtarev
 
 # Phase 1
 ## Domain
