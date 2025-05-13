@@ -140,4 +140,10 @@ However, it is significant enough to clearly see the difference even at such sma
   Rows Removed by Filter: 999
   Planning Time: 1.119 ms
   Execution Time: 1.068 ms
+  
+- Seq Scan on "Orders" (cost=0.00..22.00 rows=285 width=20) (actual time=0.016..0.765 rows=282 loops=1)
+  Filter: ((orderdate >= '2025-01-01'::date) AND (orderdate <= '2025-03-31'::date))
+  Rows Removed by Filter: 718
+  Planning Time: 0.556 ms
+  Execution Time: 1.516 ms
 ### Example queries with indexing: 
